@@ -24,7 +24,8 @@ public class DBManager {
 	}
 
 	public SqlSession getSession() {
-		return sqlSessionFactory.openSession();
+		//true - auto-commit
+		return sqlSessionFactory.openSession(true);
 	}
 	
 	public static DBManager getInstance() {

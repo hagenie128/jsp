@@ -9,7 +9,6 @@ public class StudentDTO1 {
 	public StudentDTO1() { }
 	
 	public StudentDTO1(String student_id, String name, String department, double gpa) {
-		super();
 		this.student_id = student_id;
 		this.name = name;
 		this.department = department;
