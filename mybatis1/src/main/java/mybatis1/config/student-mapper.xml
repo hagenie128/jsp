@@ -4,5 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 인터페이스 -->
 <mapper namespace="mybatis1.mapper.StudentMapper">
-  </select>
+	<select id="selectAllStudent" resultType="mybatis1.dto.StudentDTO1">
+		select * from students
+	</select>
 </mapper>
