@@ -30,5 +30,6 @@ public class JDBCMain6 {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		sc.close();
 	}
 }

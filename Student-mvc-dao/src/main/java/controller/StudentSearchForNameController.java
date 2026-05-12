@@ -18,7 +18,7 @@ public class StudentSearchForNameController implements Controller {
       ArrayList<StudentVO> list = StudentService.getInstance().searchStudentVOForName(name);
 
       request.setAttribute("list", list);
-      return new ModelAndView("search_result", false);
+      return new ModelAndView("main", false);
    }
 
 }

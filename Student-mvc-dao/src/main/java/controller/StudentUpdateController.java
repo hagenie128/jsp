@@ -20,13 +20,7 @@ public class StudentUpdateController implements Controller {
 		String name = request.getParameter("name");
 		String majorName = request.getParameter("majorName");
 		double score = Double.parseDouble(request.getParameter("score"));
-		//수정할 학생 정보 조회
-		StudentVO vo = StudentService.getInstance().searchStudentVO2(no);
-		//받은 값으로 학생정보 수정
-		vo.setName(name);
-		vo.setMajorName(majorName);
-		vo.setScore(score);
-		// 페이지 이동처리 및 전달할 데이터 세팅
+		StudentService.getInstance().updateStudent(new StudentVO(no, name, majorName, score));
 		return new ModelAndView(request.getContextPath()+"main.do", true);
 	}
 }

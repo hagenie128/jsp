@@ -15,7 +15,7 @@ import vo.StudentVO;
 public class StudentAllPrintController implements Controller {
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		ArrayList<StudentVO> list = StudentService.getInstance().getList();
+		ArrayList<StudentVO> list = StudentService.getInstance().selectAllStudent();
 		
 		//사용자에게 보여줄 데이터 셋팅
 		request.setAttribute("list", list);

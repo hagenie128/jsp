@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,23 +33,26 @@
 					</tr>
 				</thead>
 				<tbody>
-				<!-- jstl 을 이용해서 request 영역에 저장된 list 를 표 형태로 출력 -->
-				<c:forEach var="dto" items="${requestScope.list }">
-					<tr>
-						<td>${dto.no }</td>
-						<td>${dto.name }</td>
-						<td>${dto.majorName }</td>
-						<td>${dto.score }</td>
-						<td>
-							<a href="./delete.do?no=${dto.no }">삭제</a> 
-							/
-							<a href="./updateView.do?no=${dto.no }">수정</a> 
-						</td>
-					</tr>
-				</c:forEach>
+					<!-- jstl 을 이용해서 request 영역에 저장된 list 를 표 형태로 출력 -->
+					<c:forEach var="dto" items="${requestScope.list }">
+						<tr>
+							<td>${dto.no }</td>
+							<td>${dto.name }</td>
+							<td>${dto.majorName }</td>
+							<td>${dto.score }</td>
+							<td><a href="./delete.do?no=${dto.no }">삭제</a> / <a
+								href="./updateView.do?no=${dto.no }">수정</a></td>
+						</tr>
+					</c:forEach>
+					<c:if test="${empty list}">
+						<tr>
+							<td colspan="5">조회 결과 없습니다</td>
+						</tr>
+					</c:if>
 				</tbody>
 			</table>
+			<button type="button" onclick="location.href='./main.do'">취소</button>
 		</section>
-	</main>		
+	</main>
 </body>
 </html>
