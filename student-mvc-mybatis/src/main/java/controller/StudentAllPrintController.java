@@ -3,11 +3,11 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dto.StudentVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.StudentService;
 import view.ModelAndView;
-import vo.StudentVO;
 
 /**
  * 전체 학생 정보를 조회하여 출력하는 기능을 담당하는 컨트롤러

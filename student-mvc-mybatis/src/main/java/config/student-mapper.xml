@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 인터페이스 -->
+<mapper namespace="mapper.StudentMapper">
+	<select id="selectAllStudent" resultType="dto.StudentDTO1">
+		select * from students
+	</select>
+	<select id="selectForName" resultType="dto.StudentDTO1">
+		select * from students where name like concat('%',#{name},'%')
+		<!-- #{} : 값을 안전하게 넣을 때 사용 -->
+		<!-- ${} : 컬럼명/테이블명처럼 SQL 문장 일부를 직접 넣을 때 사용, 주의 필요 -->
+	</select>
+	<select id="selectForNo" resultType="dto.StudentDTO1">
+		select * from students where student_id = #{no}
+	</select>
+	<insert id="insertStudent">
+		insert into students(student_id,name,department,gpa)
+		values(#{student_id},#{name},#{department},#{gpa})
+	</insert>
+	<delete id="deleteStudent">
+		delete from students where student_id = #{no}
+	</delete>
+	<update id="updateStudent">
+		update students set name=#{name},department=#{department}
+		,gpa=#{gpa} where student_id = #{student_id}
+	</update>
+	<!-- 학과별 학생수, 학과명, 학생수 -->
+	<select id="selectStudentDeptCount" resultType="map" >
+		select department as major_name, COUNT(*) as major_count from students group by department
+	</select>
+</mapper>

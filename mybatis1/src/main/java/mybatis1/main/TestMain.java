@@ -3,7 +3,7 @@ package mybatis1.main;
 import java.util.List;
 import java.util.Map;
 
-import mybatis1.config.DBManager;
+import config.DBManager;
 import mybatis1.dto.StudentDTO1;
 import mybatis1.mapper.StudentMapper;
 

@@ -5,8 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import config.DBManager;
-import vo.StudentVO;
+import dto.StudentVO;
+import mybatis1.config.DBManager;
 
 //데이터베이스에 데이터를 조작하는 클래스
 public class StudentDAO {

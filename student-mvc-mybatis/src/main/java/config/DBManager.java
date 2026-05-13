@@ -1,38 +1,38 @@
-package config;
+package mybatis1.config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.io.InputStream;
 
-//DB 접속 정보를 가지고 있는 객체
-//언제든디 필요할 때마다 Connection 전달
-//Connection 받은 곳에서 Statement 생성해서 DB 제어
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 public class DBManager {
 	private static DBManager instance = new DBManager();
-	private Connection conn;
-
+	private SqlSessionFactory sqlSessionFactory;
+	
 	private DBManager() {
-		// conn 에 DB 접속 정보 생성
+		String resource = "mybatis1/config/mybatis-config.xml";
+		InputStream inputStream;
 		try {
-			// MySQL 드라이버 클래스 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/student_db", "root", "12345678");
-			System.out.println("DB 접속 완료");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+			inputStream = Resources.getResourceAsStream(resource);
+			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public Connection getConn() {
-		return conn;
+	public SqlSession getSession() {
+		//true - auto-commit
+		return sqlSessionFactory.openSession(true);
 	}
-
+	
 	public static DBManager getInstance() {
 		if (instance == null)
 			instance = new DBManager();
 		return instance;
 	}
+
 
 }

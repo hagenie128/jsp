@@ -3,7 +3,7 @@ package service;
 import java.util.ArrayList;
 
 import dao.StudentDAO;
-import vo.StudentVO;
+import dto.StudentVO;
 
 /**
  * 학생 데이터를 관리(저장, 검색)하는 핵심 서비스 클래스 싱글톤 패턴을 적용하여 프로그램 전체에서 동일한 데이터 저장소(arr)를 공유함
