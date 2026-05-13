@@ -7,17 +7,17 @@ public class CarDTO {
 	private String brand;
 	private String model;
 	private int year;
-	private int maileage;
+	private int mileage;
 	private int price;
 	private String registered_at;
 	
-	public CarDTO(int car_id, String brand, String model, int year, int maileage, int price,
+	public CarDTO(int car_id, String brand, String model, int year, int mileage, int price,
 			String registered_at) {
 		this.car_id = car_id;
 		this.brand = brand;
 		this.model = model;
 		this.year = year;
-		this.maileage = maileage;
+		this.mileage = mileage;
 		this.price = price;
 		this.registered_at = registered_at;
 	}
@@ -46,10 +46,10 @@ public class CarDTO {
 		this.year = year;
 	}
 	public int getMaileage() {
-		return maileage;
+		return mileage;
 	}
 	public void setMaileage(int maileage) {
-		this.maileage = maileage;
+		this.mileage = maileage;
 	}
 	public int getPrice() {
 		return price;
@@ -65,8 +65,8 @@ public class CarDTO {
 	}
 	@Override
 	public String toString() {
-		return "CarDTO [car_id=" + car_id + ", brand=" + brand + ", model=" + model + ", year=" + year + ", maileage="
-				+ maileage + ", price=" + price + ", registered_at=" + registered_at + "]";
+		return "CarDTO [car_id=" + car_id + ", brand=" + brand + ", model=" + model + ", year=" + year + ", mileage="
+				+ mileage + ", price=" + price + ", registered_at=" + registered_at + "]";
 	}
 	
 	
