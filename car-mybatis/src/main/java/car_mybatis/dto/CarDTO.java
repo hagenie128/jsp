@@ -1,31 +1,29 @@
 package car_mybatis.dto;
 
-import java.text.DecimalFormat;
-
 public class CarDTO {
-	private int car_id;
+	private String carId;
 	private String brand;
 	private String model;
 	private int year;
 	private int mileage;
 	private int price;
-	private String registered_at;
+	private String registeredAt;
 	
-	public CarDTO(int car_id, String brand, String model, int year, int mileage, int price,
-			String registered_at) {
-		this.car_id = car_id;
+	public CarDTO(String carId, String brand, String model, int year, int mileage, int price,
+			String registeredAt) {
+		this.carId = carId;
 		this.brand = brand;
 		this.model = model;
 		this.year = year;
 		this.mileage = mileage;
 		this.price = price;
-		this.registered_at = registered_at;
+		this.registeredAt = registeredAt;
 	}
-	public int getCar_id() {
-		return car_id;
+	public String getCarId() {
+		return carId;
 	}
-	public void setCar_id(int car_id) {
-		this.car_id = car_id;
+	public void setCarId(String carId) {
+		this.carId = carId;
 	}
 	public String getBrand() {
 		return brand;
@@ -57,16 +55,16 @@ public class CarDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getRegistered_at() {
-		return registered_at;
+	public String getRegisteredAt() {
+		return registeredAt;
 	}
-	public void setRegistered_at(String registered_at) {
-		this.registered_at = registered_at;
+	public void setRegisteredAt(String registeredAt) {
+		this.registeredAt = registeredAt;
 	}
 	@Override
 	public String toString() {
-		return "CarDTO [car_id=" + car_id + ", brand=" + brand + ", model=" + model + ", year=" + year + ", mileage="
-				+ mileage + ", price=" + price + ", registered_at=" + registered_at + "]";
+		return "CarDTO [carId=" + carId + ", brand=" + brand + ", model=" + model + ", year=" + year + ", mileage="
+				+ mileage + ", price=" + price + ", registeredAt=" + registeredAt + "]";
 	}
 	
 	

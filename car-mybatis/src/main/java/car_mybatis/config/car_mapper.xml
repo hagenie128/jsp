@@ -3,27 +3,65 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="car_mybatis.mapper.CarMapper">	
-	<select id="selectAllCar" resultType="car_mybatis.dto.CarDTO">
-		select * from cars
+	<select id="selectAllCar" resultType="car">
+		select 
+			car_id as carId, brand, model, year, mileage, 
+			price, registered_at as registeredAt 
+		from 
+			cars
 	</select>
 	<insert id="insertCar">
-		insert into cars(car_id, brand, model, year, mileage, price, registered_at)
-		values(#{car_id}, #{brand}, #{model}, #{year}, #{mileage}, #{price}, #{registered_at})
+		insert into 
+			cars(car_id, brand, model, year, mileage, price, registered_at)
+		values
+			(#{carId}, #{brand}, #{model}, #{year}, #{mileage}, #{price}, #{registeredAt})
 	</insert>
 	<update id="updateCar">
-		update cars set brand=#{brand}, model=#{model}, year=#{year}, 
-		mileage=#{mileage}, price=#{price}, registered_at=#{registered_at} where car_id=#{car_id}
+		update cars 
+			set brand=#{brand}, 
+			model=#{model}, 
+			year=#{year}, 
+			mileage=#{mileage}, 
+			price=#{price}, 
+			registered_at=#{registeredAt} 
+		where 
+			car_id=#{carId}
 	</update>
 	<delete id="deleteCar">
-		delete from cars where car_id=#{car_id}
+		delete from 
+			cars 
+		where 
+			car_id=#{carId}
 	</delete>
-	<select id="selectForBrand" resultType="car_mybatis.dto.CarDTO">
-		select * from cars where brand=#{brand} 
+	<select id="selectBrandCar" resultType="car">
+		select 
+			car_id as carId, brand, model, year, mileage, 
+			price, registered_at as registeredAt  
+		from 
+			cars 
+		where 
+			brand in 
+			<!-- 반복문 사용 ex) (BMV,Honda,Kia)
+				collection="데이터 형태" item="변수명" open="괄호" close="괄호" separator="구분자" -->
+			<foreach collection="array" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach> 
 	</select>
-	<select id="selectBrandCount" resultType="map">
-		select brand as brand_name, COUNT(*) as brand_count from cars group by brand
+	<select id="selectBrandModelCount" resultType="map">
+		select 
+			brand as brand_name, COUNT(*) as brand_count 
+		from 
+			cars 
+		group by 
+			brand
 	</select>
-	<select id="selectBetweenYear" resultType="car_mybatis.dto.CarDTO">
-		select * from cars where year between #{param1} and #{param2} order by year; 
+	<select id="selectYearCar" resultType="car">
+		select 
+			car_id as carId, brand, model, year, mileage, 
+			price, registered_at as registeredAt  
+		from 
+			cars 
+		where 
+			year between #{startYear} and #{endYear}
 	</select>
 </mapper>

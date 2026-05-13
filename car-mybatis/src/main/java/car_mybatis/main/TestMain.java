@@ -9,7 +9,7 @@ import car_mybatis.mapper.CarMapper;
 
 public class TestMain {
 	public static void main(String[] args) {
-		CarMapper mapper = DBManager.getInstance().getSession().getMapper(CarMapper.class);
+		CarMapper mapper = DBManager.getInstance().openSession().getMapper(CarMapper.class);
 
 //		// 전체 조회
 //		List<CarDTO> list = mapper.selectAllCar();
@@ -51,13 +51,13 @@ public class TestMain {
 //		System.out.println("제조사별 모델 개수 조회 완료");
 
 		// 2022~2025 자동차 데이터 조회
-		int param1 = 2022;
-		int param2 = 2025;
-		List<CarDTO> list = mapper.selectBetweenYear(param1,param2);
-		for (CarDTO dto : list) {
-			System.out.println(dto);
-		}
-		System.out.println("2022~2025 자동차 데이터 조회 완료");
+//		int param1 = 2022;
+//		int param2 = 2025;
+//		List<CarDTO> list = mapper.selectYearCar(param1,param2);
+//		for (CarDTO dto : list) {
+//			System.out.println(dto);
+//		}
+//		System.out.println("2022~2025 자동차 데이터 조회 완료");
 
 	}
 }

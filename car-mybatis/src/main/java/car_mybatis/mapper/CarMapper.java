@@ -1,5 +1,6 @@
 package car_mybatis.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +13,11 @@ public interface CarMapper {
 
 	public int updateCar(CarDTO dto1);
 
-	public int deleteCar(int no);
+	public int deleteCar(String no);
 
-	public List<CarDTO> selectForBrand(String brand);
+	public List<CarDTO> selectBrandCar(String[] arr);
 
-	public List<Map<String, Object>> selectBrandCount();
+	public List<Map<String, Object>> selectBrandModelCount();
 
-	public List<CarDTO> selectBetweenYear(int param1, int param2);
+	public List<CarDTO> selectYearCar(HashMap<String, Integer> map);
 }
