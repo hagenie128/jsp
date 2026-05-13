@@ -15,9 +15,9 @@ public class StudentDeleteController implements Controller {
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		// 전송할 학번 뽑음
-		String no = request.getParameter("no");
+		String student_id = request.getParameter("student_id");
 		// 삭제할 학번을 Student Service 클래스로 보내서 삭제 처리
-		StudentService.getInstance().deleteStudentDTO(no);
+		StudentService.getInstance().deleteStudentDTO(student_id);
 		//main.do로 이동
 		return new ModelAndView(request.getContextPath()+"/main.do", true);
 	}

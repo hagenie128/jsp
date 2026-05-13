@@ -15,11 +15,11 @@ public class StudentUpdateController implements Controller {
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		// 데이터 받는 부분
-		String no = request.getParameter("no");
+		String student_id = request.getParameter("student_id");
 		String name = request.getParameter("name");
-		String majorName = request.getParameter("majorName");
-		double score = Double.parseDouble(request.getParameter("score"));
-		StudentService.getInstance().updateStudent(new dto.StudentDTO(no, name, majorName, score));
+		String department = request.getParameter("department");
+		double gpa = Double.parseDouble(request.getParameter("gpa"));
+		StudentService.getInstance().updateStudent(new dto.StudentDTO(student_id, name, department, gpa));
 		return new ModelAndView(request.getContextPath()+"main.do", true);
 	}
 }

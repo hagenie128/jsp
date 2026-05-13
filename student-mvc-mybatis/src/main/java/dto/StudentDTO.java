@@ -40,7 +40,7 @@ public class StudentDTO {
 	}
 	@Override
 	public String toString() {
-		return "StudentDTO1 [student_id=" + student_id + ", name=" + name + ", department=" + department + ", gpa="
+		return "StudentDTO [student_id=" + student_id + ", name=" + name + ", department=" + department + ", gpa="
 				+ gpa + "]";
 	}
 	

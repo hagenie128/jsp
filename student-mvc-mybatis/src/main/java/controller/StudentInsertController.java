@@ -16,15 +16,15 @@ public class StudentInsertController implements Controller {
 	public ModelAndView execute(HttpServletRequest request, 
 			HttpServletResponse response) throws IOException {
 		// 데이터 받는 부분
-		String no = request.getParameter("no");
+		String student_id = request.getParameter("student_id");
 		String name = request.getParameter("name");
-		String majorName = request.getParameter("majorName");
-		double score = Double.parseDouble(request.getParameter("score")); 
+		String department = request.getParameter("department");
+		double gpa = Double.parseDouble(request.getParameter("gpa")); 
 		// 값이 없거나 숫자가 아닌 경우 NumberFormatException 발생 가능
-		System.out.println(no + "," + name + "," + majorName + "," + score);
+		System.out.println(student_id + "," + name + "," + department + "," + gpa);
 		// 데이터 처리하는 부분
 		boolean flag = StudentService.getInstance().appendStudentDTO(
-				new StudentDTO(no, name, majorName, score));
+				new StudentDTO(student_id, name, department, gpa));
 		ModelAndView view = new ModelAndView("insert_result", false);
 		// 페이지 이동처리 및 전달할 데이터 세팅
 		request.setAttribute("flag", flag);

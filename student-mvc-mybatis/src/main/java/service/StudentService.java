@@ -42,7 +42,7 @@ public class StudentService {
 	}
 
 	public List<StudentDTO> searchStudentForName(String name) {
-		return mapper.selectForNameStudent(name);
+		return mapper.selectForName(name);
 	}
 
 	public List<StudentDTO> selectAllStudent() {

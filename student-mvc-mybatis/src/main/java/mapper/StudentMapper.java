@@ -19,6 +19,4 @@ public interface StudentMapper {
 	public int updateStudent(StudentDTO dto);
 	
 	public List<Map<String, Object>> selectStudentDeptCount();
-
-	public List<StudentDTO> selectForNameStudent(String name);
 }

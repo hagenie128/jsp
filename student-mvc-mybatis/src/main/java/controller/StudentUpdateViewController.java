@@ -13,11 +13,11 @@ public class StudentUpdateViewController implements Controller {
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 전송할 학번 뽑음
-		String no = request.getParameter("no");
+		String student_id = request.getParameter("student_id");
 		//Service 클래스에서 해당 학생 정보 가져옴
-		StudentDTO vo = StudentService.getInstance().searchStudent(no);
+		StudentDTO dto = StudentService.getInstance().searchStudent(student_id);
 		//update 로 학번 전송
-		request.setAttribute("vo", vo);
+		request.setAttribute("dto", dto);
 		return new ModelAndView("student_update", false);
 	}
 
