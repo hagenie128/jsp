@@ -1,14 +1,14 @@
 package dto;
 
-public class StudentDTO1 {
+public class StudentDTO {
 	private String student_id;
 	private String name;
 	private String department;
 	private double gpa;
 	
-	public StudentDTO1() { }
+	public StudentDTO() { }
 	
-	public StudentDTO1(String student_id, String name, String department, double gpa) {
+	public StudentDTO(String student_id, String name, String department, double gpa) {
 		this.student_id = student_id;
 		this.name = name;
 		this.department = department;

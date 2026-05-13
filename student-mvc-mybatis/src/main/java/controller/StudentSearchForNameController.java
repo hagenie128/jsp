@@ -1,9 +1,9 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
-import dto.StudentVO;
+import dto.StudentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.StudentService;
@@ -15,7 +15,7 @@ public class StudentSearchForNameController implements Controller {
    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String name = request.getParameter("name");
 
-      ArrayList<StudentVO> list = StudentService.getInstance().searchStudentVOForName(name);
+      List<StudentDTO> list = StudentService.getInstance().searchStudentForName(name);
 
       request.setAttribute("list", list);
       return new ModelAndView("main", false);

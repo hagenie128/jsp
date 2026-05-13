@@ -2,7 +2,7 @@ package controller;
 
 import java.io.IOException;
 
-import dto.StudentVO;
+import dto.StudentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.StudentService;
@@ -15,7 +15,7 @@ public class StudentUpdateViewController implements Controller {
 		// 전송할 학번 뽑음
 		String no = request.getParameter("no");
 		//Service 클래스에서 해당 학생 정보 가져옴
-		StudentVO vo = StudentService.getInstance().searchStudentVO2(no);
+		StudentDTO vo = StudentService.getInstance().searchStudent(no);
 		//update 로 학번 전송
 		request.setAttribute("vo", vo);
 		return new ModelAndView("student_update", false);

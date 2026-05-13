@@ -1,9 +1,10 @@
 package service;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import dao.StudentDAO;
-import dto.StudentVO;
+import config.DBManager;
+import dto.StudentDTO;
+import mapper.StudentMapper;
 
 /**
  * 학생 데이터를 관리(저장, 검색)하는 핵심 서비스 클래스 싱글톤 패턴을 적용하여 프로그램 전체에서 동일한 데이터 저장소(arr)를 공유함
@@ -13,67 +14,42 @@ public class StudentService {
 	private static StudentService instance = new StudentService();
 
 	// 데이터 저장용 리스트 생성
-	private ArrayList<StudentVO> list;
-	private StudentDAO dao; 
+	private StudentMapper mapper;
 
 
 	private StudentService() {
-		dao = StudentDAO.getInstance();
+		mapper = DBManager.getInstance().getSession().getMapper(StudentMapper.class);
 	}
 
-	/**
-	 * 어디서든 동일한 서비스 객체에 접근할 수 있도록 인스턴스를 반환하는 메서드
-	 */
+
 	public static StudentService getInstance() {
 		if (instance == null)
 			instance = new StudentService();
 		return instance;
 	}
 
-	/**
-	 * 전체 학생 리스트를 반환하는 메서드
-	 * 
-	 * @return 학생 리스트
-	 */
-	public ArrayList<StudentVO> getList() {
-		return list;
+
+	public StudentDTO searchStudent(String no) {
+		return mapper.selectForNo(no);
 	}
 
-	/**
-	 * 학번을 기준으로 학생의 인덱스를 찾는 메서드
-	 * 
-	 * @param no 검색할 학번
-	 * @return 찾으면 해당 인덱스, 못 찾으면 -1
-	 */
-	public int searchStudentVO(String no) {
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getNo().equals(no))
-				return i;
-		}
-		return -1;
+	public boolean appendStudentDTO(StudentDTO dto) {
+		return mapper.insertStudent(dto) != 0;
 	}
 
-	public StudentVO searchStudentVO2(String no) {
-		return dao.selectStudent(no);
+	public boolean deleteStudentDTO(String no) {
+		return mapper.deleteStudent(no) != 0;
 	}
 
-	public boolean appendStudentVO(StudentVO vo) {
-		return dao.insertStudent(vo) != 0;
+	public List<StudentDTO> searchStudentForName(String name) {
+		return mapper.selectForNameStudent(name);
 	}
 
-	public boolean deleteStudentVO(String no) {
-		return dao.deleteStudent(no) != 0;
+	public List<StudentDTO> selectAllStudent() {
+		return mapper.selectAllStudent();
 	}
 
-	public ArrayList<StudentVO> searchStudentVOForName(String name) {
-		return dao.selectForNameStudent(name);
-	}
-
-	public ArrayList<StudentVO> selectAllStudent() {
-		return dao.selectAllStudent();
-	}
-
-	public boolean updateStudent(StudentVO vo) {
-		return dao.updateStudent(vo) != 0;
+	public boolean updateStudent(StudentDTO dto) {
+		return mapper.updateStudent(dto) != 0;
 	}
 }

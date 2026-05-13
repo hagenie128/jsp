@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 
-import dto.StudentVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.StudentService;
@@ -20,7 +19,7 @@ public class StudentUpdateController implements Controller {
 		String name = request.getParameter("name");
 		String majorName = request.getParameter("majorName");
 		double score = Double.parseDouble(request.getParameter("score"));
-		StudentService.getInstance().updateStudent(new StudentVO(no, name, majorName, score));
+		StudentService.getInstance().updateStudent(new dto.StudentDTO(no, name, majorName, score));
 		return new ModelAndView(request.getContextPath()+"main.do", true);
 	}
 }

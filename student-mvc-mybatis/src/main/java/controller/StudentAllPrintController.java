@@ -1,9 +1,9 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
-import dto.StudentVO;
+import dto.StudentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.StudentService;
@@ -15,7 +15,7 @@ import view.ModelAndView;
 public class StudentAllPrintController implements Controller {
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		ArrayList<StudentVO> list = StudentService.getInstance().selectAllStudent();
+		List<StudentDTO> list = StudentService.getInstance().selectAllStudent();
 		
 		//사용자에게 보여줄 데이터 셋팅
 		request.setAttribute("list", list);

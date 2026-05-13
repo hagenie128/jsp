@@ -3,20 +3,22 @@ package mapper;
 import java.util.List;
 import java.util.Map;
 
-import dto.StudentDTO1;
+import dto.StudentDTO;
 
 public interface StudentMapper {
-	public List<StudentDTO1> selectAllStudent();
+	public List<StudentDTO> selectAllStudent();
 
-	public List<StudentDTO1> selectForName(String name);
+	public List<StudentDTO> selectForName(String name);
 
-	public StudentDTO1 selectForNo(String no);
+	public StudentDTO selectForNo(String no);
 
-	public int insertStudent(StudentDTO1 dto);
+	public int insertStudent(StudentDTO dto);
 
 	public int deleteStudent(String no);
 
-	public int updateStudent(StudentDTO1 dto);
+	public int updateStudent(StudentDTO dto);
 	
 	public List<Map<String, Object>> selectStudentDeptCount();
+
+	public List<StudentDTO> selectForNameStudent(String name);
 }

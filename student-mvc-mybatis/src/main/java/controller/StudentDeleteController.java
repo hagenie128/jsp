@@ -17,7 +17,7 @@ public class StudentDeleteController implements Controller {
 		// 전송할 학번 뽑음
 		String no = request.getParameter("no");
 		// 삭제할 학번을 Student Service 클래스로 보내서 삭제 처리
-		StudentService.getInstance().deleteStudentVO(no);
+		StudentService.getInstance().deleteStudentDTO(no);
 		//main.do로 이동
 		return new ModelAndView(request.getContextPath()+"/main.do", true);
 	}
