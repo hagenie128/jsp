@@ -11,7 +11,10 @@
 		board_member(id, passwd, username, nickname)
 		values(#{id}, #{passwd}, #{userName}, #{nickName})
 	</insert>
-	<select id="CheckId" resultType="member">
+	<select id="CheckId">
 		select * from board_member where id=#{id}
+	</select>
+	<select id="memberSearch" resultType="member">
+		
 	</select>
 </mapper>

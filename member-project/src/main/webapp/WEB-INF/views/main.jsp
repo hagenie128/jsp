@@ -111,7 +111,7 @@ nav a {
 				<td colspan="5">
 					<div class="search-box">
 						<form action="./search.do" method="get" class="search-form">
-							<input type="text" name="nickName" placeholder="아이디 or 닉네임 일부 입력">
+							<input type="text" name="text" placeholder="아이디 or 닉네임 일부 입력">
 							<button type="submit" id="btnSearch">검색</button>
 						</form>
 						<button type="button" id="btnSearchCancel"

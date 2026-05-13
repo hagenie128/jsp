@@ -31,4 +31,8 @@ public class MemberService {
 	public boolean checkId(String id){
 		return mapper.CheckId(id);
 	}
+
+	public List<MemberDTO> memberSearch(String text) {
+		return mapper.memberSearch(text);
+	}
 }

@@ -11,5 +11,7 @@ public interface MemberMapper {
 	public boolean insertMember(MemberDTO dto);
 
 	public boolean CheckId(String id);
+
+	public List<MemberDTO> memberSearch(String text);
 	
 }
