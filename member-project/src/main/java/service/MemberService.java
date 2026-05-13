@@ -27,4 +27,8 @@ public class MemberService {
 	public boolean insertMember(MemberDTO dto) {
 		return mapper.insertMember(dto);
 	}
+	
+	public boolean checkId(String id){
+		return mapper.CheckId(id);
+	}
 }

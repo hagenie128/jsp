@@ -9,5 +9,7 @@ public interface MemberMapper {
 	public List<MemberDTO> selectAllMember();
 
 	public boolean insertMember(MemberDTO dto);
+
+	public boolean CheckId(String id);
 	
 }
