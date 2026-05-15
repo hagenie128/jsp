@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import mybatis1.config.DBManager;
-import mybatis1.dto.StudentDTO1;
 import mybatis1.mapper.StudentMapper;
 
 public class TestMain {

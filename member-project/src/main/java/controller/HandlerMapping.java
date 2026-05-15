@@ -26,7 +26,10 @@ public class HandlerMapping {
 			controller = new LoginViewController();
 			break;
 		case "login.do":
-//			controller = new LoginController();
+			controller = new LoginController();
+			break;
+		case "loginOut.do":
+			controller = new LogOutController();
 			break;
 		case "registerView.do":
 			controller = new RegisterViewController();
@@ -34,11 +37,14 @@ public class HandlerMapping {
 		case "register.do":
 			controller = new RegisterController();
 			break;
+		case "delete.do":
+			controller = new DeleteContorller();
+			break;
 		case "checkId.do":
 			controller = new CheckIdController();
 			break;
 		case "search.do":
-//			controller = new MemberSearchController();
+			controller = new SearchController();
 			break;
 		}
 		return controller;

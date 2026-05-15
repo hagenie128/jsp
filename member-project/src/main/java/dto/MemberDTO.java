@@ -7,8 +7,13 @@ public class MemberDTO {
 	private String passwd;
 	private String userName;
 	private String nickName;
-
+	
+	// 기본 생성자
+	public MemberDTO() {
+		super();
+	}
 	public MemberDTO(int no, String id, String passwd, String userName, String nickName) {
+		super();
 		this.no = no;
 		this.id = id;
 		this.passwd = passwd;
@@ -41,19 +46,19 @@ public class MemberDTO {
 		this.passwd = passwd;
 	}
 
-	public String getUsername() {
+	public String getUserName() {
 		return userName;
 	}
 
-	public void setUsername(String userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	public String getNickname() {
+	public String getNickName() {
 		return nickName;
 	}
 
-	public void setNickname(String nickName) {
+	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
 

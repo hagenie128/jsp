@@ -2,9 +2,6 @@ package car_mybatis.main;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.exceptions.PersistenceException;
 
 import car_mybatis.dto.CarDTO;
 import service.CarService;

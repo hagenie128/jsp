@@ -119,12 +119,12 @@
 			<form action="./login.do" method="post">
 				<div class="input-group">
 					<label for="id">아이디</label>
-					<input type="text" id="id" name="id" placeholder="아이디를 입력하세요" required>
+					<input type="text" id="id" name="id" placeholder="아이디를 입력하세요">
 				</div>
 
 				<div class="input-group">
 					<label for="passwd">비밀번호</label>
-					<input type="password" id="passwd" name="passwd" placeholder="비밀번호를 입력하세요" required>
+					<input type="password" id="passwd" name="passwd" placeholder="비밀번호를 입력하세요">
 				</div>
 
 				<div class="button-group">
