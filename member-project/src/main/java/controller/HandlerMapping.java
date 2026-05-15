@@ -46,6 +46,12 @@ public class HandlerMapping {
 		case "search.do":
 			controller = new SearchController();
 			break;
+		case "updateView.do":
+			controller = new UpdateViewController();
+			break;
+		case "update.do":
+			controller = new UpdateController();
+			break;
 		}
 		return controller;
 	}

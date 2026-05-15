@@ -21,5 +21,9 @@ public interface MemberMapper {
 
 	public List<MemberDTO> searchMembers(HashMap<String, String> map);
 
+	public MemberDTO selectMemberByNo(String no);
+
+	public int updateMember(MemberDTO memberDTO);
+
 	
 }

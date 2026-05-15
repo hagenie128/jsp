@@ -17,7 +17,6 @@ public class CheckIdController implements Controller {
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 사용자가 보낸 데이터를 받음
 		String id = request.getParameter("id");
-
 		// id로 해당 사용자가 있는지 검색 결과 받음
 		MemberDTO member = MemberService.getInstance().selectMemberById(id);
 
@@ -26,7 +25,7 @@ public class CheckIdController implements Controller {
 		if (member == null) {
 			map.put("result", 1);
 			map.put("msg", "사용할 수 있는 아이디입니다.");
-		} else {
+		}else{
 			map.put("result", 0);
 			map.put("msg", "중복된 아이디입니다.");
 		}
