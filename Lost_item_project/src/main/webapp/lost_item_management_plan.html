@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>분실물 보관 시스템 설계 정리</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			line-height: 1.7;
+			padding: 32px;
+			background: #fafafa;
+			color: #222;
+		}
+
+		h1,
+		h2,
+		h3 {
+			color: #333;
+		}
+
+		section {
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 12px;
+			padding: 24px;
+			margin-bottom: 24px;
+		}
+
+		code,
+		pre {
+			font-family: Consolas, monospace;
+		}
+
+		pre {
+			background: #272822;
+			color: #f8f8f2;
+			padding: 16px;
+			border-radius: 10px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 12px;
+		}
+
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: left;
+			vertical-align: top;
+		}
+
+		th {
+			background: #f1f1f1;
+		}
+
+		.note {
+			background: #fff7d6;
+			border-left: 5px solid #f1c40f;
+			padding: 12px;
+			margin-top: 12px;
+		}
+
+		.good {
+			background: #eaf8ef;
+			border-left: 5px solid #27ae60;
+			padding: 12px;
+			margin-top: 12px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>분실물 보관 시스템 설계 정리</h1>
+	<p>최근 3일 동안 배운 JSP, MVC, MyBatis, AJAX, 동적 HTML 출력, 파일 업로드, 파일
+		다운로드, 드래그앤드롭을 한 번에 복습하기 위한 예제입니다.</p>
+
+	<section>
+		<h2>1. 프로젝트 주제</h2>
+		<h3>분실물 보관 시스템</h3>
+		<p>학원이나 학교에서 발견된 분실물을 관리자가 등록하고, 사용자는 분실물 목록을 검색할 수 있는 시스템입니다.
+			분실물에는 물건명, 발견장소, 보관상태, 사진 파일이 포함됩니다.</p>
+
+		<h3>핵심 기능</h3>
+		<ul>
+			<li>분실물 전체 목록 조회</li>
+			<li>분실물 검색: 물건명, 발견장소, 보관상태 기준</li>
+			<li>AJAX 검색 후 tbody 동적 출력</li>
+			<li>분실물 등록</li>
+			<li>분실물 수정</li>
+			<li>분실물 삭제</li>
+			<li>분실물 사진 업로드</li>
+			<li>드래그앤드롭 파일 업로드</li>
+			<li>첨부파일 다운로드</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>2. DB 테이블 설계</h2>
+
+		<h3>테이블명: lost_item</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>컬럼명</th>
+					<th>자료형</th>
+					<th>설명</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>item_no</td>
+					<td>int primary key auto_increment</td>
+					<td>분실물 번호</td>
+				</tr>
+				<tr>
+					<td>item_name</td>
+					<td>varchar(100)</td>
+					<td>분실물 이름</td>
+				</tr>
+				<tr>
+					<td>found_place</td>
+					<td>varchar(100)</td>
+					<td>발견 장소</td>
+				</tr>
+				<tr>
+					<td>found_date</td>
+					<td>date</td>
+					<td>발견 날짜</td>
+				</tr>
+				<tr>
+					<td>item_status</td>
+					<td>varchar(20)</td>
+					<td>보관중, 반환완료, 폐기예정</td>
+				</tr>
+				<tr>
+					<td>description</td>
+					<td>varchar(500)</td>
+					<td>상세 설명</td>
+				</tr>
+				<tr>
+					<td>origin_file_name</td>
+					<td>varchar(255)</td>
+					<td>사용자가 업로드한 원본 파일명</td>
+				</tr>
+				<tr>
+					<td>save_file_name</td>
+					<td>varchar(255)</td>
+					<td>서버에 저장된 파일명</td>
+				</tr>
+				<tr>
+					<td>file_path</td>
+					<td>varchar(500)</td>
+					<td>파일 저장 경로</td>
+				</tr>
+				<tr>
+					<td>created_at</td>
+					<td>datetime</td>
+					<td>등록일</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>SQL 생성문</h3>
+		<pre>
+			<code>
+			create database lost_item_db;
+			use lost_item_db;
+
+create table lost_item (
+	item_no int primary key auto_increment,
+	item_name varchar(100) not null,
+	found_place varchar(100) not null,
+	found_date date not null,
+	item_status varchar(20) default '보관중',
+	description varchar(500),
+	origin_file_name varchar(255),
+	save_file_name varchar(255),
+	file_path varchar(500),
+	created_at datetime default now());
+	</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>3. Java 패키지 구조</h2>
+		<pre>
+			<code>src/main/java
+ ├─ controller
+ │   ├─ MainController.java
+ │   ├─ SearchLostItemController.java
+ │   ├─ InsertLostItemController.java
+ │   ├─ InsertViewController.java
+ │   ├─ UpdateViewController.java
+ │   ├─ UpdateLostItemController.java
+ │   ├─ DeleteLostItemController.java
+ │   ├─ FileUploadController.java
+ │   └─ FileDownloadController.java
+ │
+ ├─ dto
+ │   └─ LostItemDTO.java
+ │
+ ├─ mapper
+ │   └─ LostItemMapper.java
+ │
+ ├─ service
+ │   └─ LostItemService.java
+ │
+ ├─ config
+ │   ├─ DBManager.java
+ │   └─ HandlerMapping.java
+ │
+ └─ front
+     └─ DispatcherServlet.java
+
+src/main/resources
+ └─ mapper
+     └─ lost_item_mapper.xml
+
+src/main/webapp
+ ├─ main.jsp
+ ├─ insert.jsp
+ ├─ update.jsp
+ ├─ detail.jsp
+ ├─ drag_upload.html
+ └─ css
+     └─ style.css</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>4. DTO 변수명</h2>
+		<h3>LostItemDTO.java</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Java 변수명</th>
+					<th>DB 컬럼명</th>
+					<th>설명</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>itemNo</td>
+					<td>item_no</td>
+					<td>분실물 번호</td>
+				</tr>
+				<tr>
+					<td>itemName</td>
+					<td>item_name</td>
+					<td>분실물 이름</td>
+				</tr>
+				<tr>
+					<td>foundPlace</td>
+					<td>found_place</td>
+					<td>발견 장소</td>
+				</tr>
+				<tr>
+					<td>foundDate</td>
+					<td>found_date</td>
+					<td>발견 날짜</td>
+				</tr>
+				<tr>
+					<td>itemStatus</td>
+					<td>item_status</td>
+					<td>보관 상태</td>
+				</tr>
+				<tr>
+					<td>description</td>
+					<td>description</td>
+					<td>상세 설명</td>
+				</tr>
+				<tr>
+					<td>originFileName</td>
+					<td>origin_file_name</td>
+					<td>원본 파일명</td>
+				</tr>
+				<tr>
+					<td>saveFileName</td>
+					<td>save_file_name</td>
+					<td>저장 파일명</td>
+				</tr>
+				<tr>
+					<td>filePath</td>
+					<td>file_path</td>
+					<td>파일 경로</td>
+				</tr>
+				<tr>
+					<td>createdAt</td>
+					<td>created_at</td>
+					<td>등록일</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="note">JSP EL에서 ${lostItem.itemName}처럼 쓰려면 DTO에
+			getItemName()이 있어야 합니다.</div>
+	</section>
+
+	<section>
+		<h2>5. Mapper 메서드명</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>메서드명</th>
+					<th>역할</th>
+					<th>반환 타입 예시</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>selectAllLostItem()</td>
+					<td>분실물 전체 조회</td>
+					<td>List&lt;LostItemDTO&gt;</td>
+				</tr>
+				<tr>
+					<td>searchLostItem(kind, search)</td>
+					<td>검색 기준과 검색어로 조회</td>
+					<td>List&lt;LostItemDTO&gt;</td>
+				</tr>
+				<tr>
+					<td>insertLostItem(dto)</td>
+					<td>분실물 등록</td>
+					<td>int</td>
+				</tr>
+				<tr>
+					<td>selectLostItemByNo(itemNo)</td>
+					<td>분실물 번호로 상세 조회</td>
+					<td>LostItemDTO</td>
+				</tr>
+				<tr>
+					<td>updateLostItem(dto)</td>
+					<td>분실물 정보 수정</td>
+					<td>int</td>
+				</tr>
+				<tr>
+					<td>deleteLostItem(itemNo)</td>
+					<td>분실물 삭제</td>
+					<td>int</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section>
+		<h2>6. MyBatis SQL 구성</h2>
+		<h3>lost_item_mapper.xml에 넣을 SQL 방향</h3>
+
+		<h4>전체 조회</h4>
+		<pre>
+			<code>select *
+from lost_item
+order by item_no desc</code>
+		</pre>
+
+		<h4>검색 조회</h4>
+		<pre>
+			<code>&lt;choose&gt;
+	&lt;when test="kind == 'itemName'"&gt;
+		item_name like concat('%', #{search}, '%')
+	&lt;/when&gt;
+	&lt;when test="kind == 'foundPlace'"&gt;
+		found_place like concat('%', #{search}, '%')
+	&lt;/when&gt;
+	&lt;when test="kind == 'itemStatus'"&gt;
+		item_status = #{search}
+	&lt;/when&gt;
+&lt;/choose&gt;</code>
+		</pre>
+
+		<h4>등록</h4>
+		<pre>
+			<code>insert into lost_item
+(item_name, found_place, found_date, item_status, description, origin_file_name, save_file_name, file_path)
+values
+(#{itemName}, #{foundPlace}, #{foundDate}, #{itemStatus}, #{description}, #{originFileName}, #{saveFileName}, #{filePath})</code>
+		</pre>
+
+		<h4>수정</h4>
+		<pre>
+			<code>update lost_item
+set item_name = #{itemName},
+	found_place = #{foundPlace},
+	found_date = #{foundDate},
+	item_status = #{itemStatus},
+	description = #{description}
+where item_no = #{itemNo}</code>
+		</pre>
+
+		<h4>삭제</h4>
+		<pre>
+			<code>delete from lost_item
+where item_no = #{itemNo}</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>7. Controller 이름과 역할</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>URL</th>
+					<th>Controller명</th>
+					<th>역할</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>/main.do</td>
+					<td>MainController</td>
+					<td>분실물 전체 목록 조회 후 main.jsp로 이동</td>
+				</tr>
+				<tr>
+					<td>/searchLostItem.do</td>
+					<td>SearchLostItemController</td>
+					<td>AJAX 검색 요청 처리 후 JSON 응답</td>
+				</tr>
+				<tr>
+					<td>/insertView.do</td>
+					<td>InsertViewController</td>
+					<td>분실물 등록 화면으로 이동</td>
+				</tr>
+				<tr>
+					<td>/insertLostItem.do</td>
+					<td>InsertLostItemController</td>
+					<td>분실물 등록 처리</td>
+				</tr>
+				<tr>
+					<td>/updateView.do</td>
+					<td>UpdateViewController</td>
+					<td>분실물 번호로 기존 정보 조회 후 수정 화면 이동</td>
+				</tr>
+				<tr>
+					<td>/updateLostItem.do</td>
+					<td>UpdateLostItemController</td>
+					<td>분실물 수정 처리</td>
+				</tr>
+				<tr>
+					<td>/deleteLostItem.do</td>
+					<td>DeleteLostItemController</td>
+					<td>분실물 삭제 처리</td>
+				</tr>
+				<tr>
+					<td>/fileUpload.do</td>
+					<td>FileUploadController</td>
+					<td>AJAX 파일 업로드 처리 후 JSON 응답</td>
+				</tr>
+				<tr>
+					<td>/fileDownload.do</td>
+					<td>FileDownloadController</td>
+					<td>파일 다운로드 처리</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section>
+		<h2>8. 화면 구성</h2>
+
+		<h3>main.jsp</h3>
+		<pre>
+			<code>[분실물 목록]
+
+검색 기준 select
+- 물건명 value="itemName"
+- 발견장소 value="foundPlace"
+- 상태 value="itemStatus"
+
+검색어 input id="search"
+검색 버튼 id="btnSearch"
+취소 버튼 id="btnSearchCancel"
+등록 버튼 onclick="location.href='./insertView.do'"
+
+테이블
+- 번호
+- 물건명
+- 발견장소
+- 발견일
+- 상태
+- 설명
+- 사진 다운로드
+- 수정
+- 삭제
+
+tbody id="listArea"</code>
+		</pre>
+
+		<h3>insert.jsp</h3>
+		<pre>
+			<code>[분실물 등록]
+
+input name="itemName"
+input name="foundPlace"
+input name="foundDate" type="date"
+select name="itemStatus"
+textarea name="description"
+input type="file" name="uploadFile"
+
+파일 추가 버튼 id="btnAddFile"
+등록 버튼 id="btnInsert"
+취소 버튼</code>
+		</pre>
+
+		<h3>update.jsp</h3>
+		<pre>
+			<code>[분실물 수정]
+
+hidden name="itemNo"
+input name="itemName"
+input name="foundPlace"
+input name="foundDate"
+select name="itemStatus"
+textarea name="description"
+
+수정 버튼
+취소 버튼</code>
+		</pre>
+
+		<h3>drag_upload.html</h3>
+		<pre>
+			<code>[드래그앤드롭 업로드]
+
+업로드 박스 id="dropArea"
+선택된 파일 목록 div id="fileList"
+업로드 버튼 id="btnUpload"</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>9. JavaScript 변수명 정리</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>변수명</th>
+					<th>역할</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>kind</td>
+					<td>검색 기준</td>
+				</tr>
+				<tr>
+					<td>search</td>
+					<td>검색어</td>
+				</tr>
+				<tr>
+					<td>url</td>
+					<td>AJAX 요청 주소</td>
+				</tr>
+				<tr>
+					<td>response</td>
+					<td>fetch 응답 객체</td>
+				</tr>
+				<tr>
+					<td>data</td>
+					<td>서버에서 받은 JSON</td>
+				</tr>
+				<tr>
+					<td>list</td>
+					<td>data.list에 들어있는 분실물 배열</td>
+				</tr>
+				<tr>
+					<td>area</td>
+					<td>tbody 영역</td>
+				</tr>
+				<tr>
+					<td>tag</td>
+					<td>tbody에 넣을 HTML 문자열</td>
+				</tr>
+				<tr>
+					<td>formData</td>
+					<td>파일과 input 값을 담는 객체</td>
+				</tr>
+				<tr>
+					<td>fileInputs</td>
+					<td>파일 input 목록</td>
+				</tr>
+				<tr>
+					<td>dropArea</td>
+					<td>드래그앤드롭 영역</td>
+				</tr>
+				<tr>
+					<td>selectedFiles</td>
+					<td>드롭된 파일 목록</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section>
+		<h2>10. AJAX 검색 작동 흐름</h2>
+		<pre>
+			<code>1. 사용자가 검색 기준과 검색어를 입력한다.
+2. 검색 버튼을 누른다.
+3. JS가 kind와 search 값을 가져온다.
+4. fetch('./searchLostItem.do?kind=' + kind + '&search=' + search) 요청을 보낸다.
+5. Controller가 kind와 search를 받는다.
+6. Service가 Mapper를 호출한다.
+7. Mapper가 DB에서 검색 결과를 가져온다.
+8. Controller가 JSON 형태로 응답한다.
+9. JS가 data.list를 받는다.
+10. tbody id="listArea"를 비운다.
+11. forEach로 tr을 조립한다.
+12. area.innerHTML = tag로 화면을 다시 그린다.</code>
+		</pre>
+
+		<h3>검색 JSON 응답 형태</h3>
+		<pre>
+			<code>{
+	"result": 1,
+	"msg": "3건 조회",
+	"list": [
+		{
+			"itemNo": 1,
+			"itemName": "검은색 지갑",
+			"foundPlace": "3층 강의실",
+			"foundDate": "2026-05-13",
+			"itemStatus": "보관중",
+			"description": "학생증과 카드가 들어있는 검은색 지갑",
+			"originFileName": "wallet.jpg"
+		}
+	]
+}</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>11. 파일 업로드 작동 흐름</h2>
+		<pre>
+			<code>1. 사용자가 분실물 정보를 입력한다.
+2. 사용자가 사진 파일을 선택한다.
+3. 업로드 버튼을 누른다.
+4. JS가 FormData를 만든다.
+5. 일반 input 값은 input.value로 꺼내서 formData.append 한다.
+6. 파일 input 값은 input.files[0]으로 꺼내서 formData.append 한다.
+7. fetch('./fileUpload.do', { method: 'POST', body: formData })로 전송한다.
+8. Controller는 @MultipartConfig 상태에서 request.getParts()로 데이터를 받는다.
+9. Part의 getSubmittedFileName()이 있으면 파일로 판단한다.
+10. File root = new File('C:/fileupload')로 저장 폴더를 지정한다.
+11. 폴더가 없으면 mkdirs()로 만든다.
+12. part.write(savePath)로 파일을 저장한다.
+13. 파일명과 경로를 DTO에 담아 DB에 insert 한다.
+14. JSON으로 업로드 성공 메시지를 응답한다.</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>12. 드래그앤드롭 작동 흐름</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>이벤트명</th>
+					<th>역할</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>dragenter</td>
+					<td>파일이 업로드 영역 안으로 들어올 때 스타일 변경</td>
+				</tr>
+				<tr>
+					<td>dragover</td>
+					<td>파일이 영역 위에 있을 때 발생. event.preventDefault() 필수</td>
+				</tr>
+				<tr>
+					<td>dragleave</td>
+					<td>파일이 영역 밖으로 나갈 때 스타일 원래대로 변경</td>
+				</tr>
+				<tr>
+					<td>drop</td>
+					<td>파일을 놓았을 때 dataTransfer.files로 파일 목록을 받음</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<pre>
+			<code>1. 사용자가 파일을 dropArea 위로 끌고 온다.
+2. dragover에서 event.preventDefault()를 호출한다.
+3. drop 이벤트에서 event.dataTransfer.files를 꺼낸다.
+4. selectedFiles 배열에 파일을 저장한다.
+5. fileList 영역에 파일명을 출력한다.
+6. 업로드 버튼을 누르면 selectedFiles를 FormData에 담는다.
+7. fetch로 서버에 전송한다.</code>
+		</pre>
+	</section>
+
+	<section>
+		<h2>13. 파일 다운로드 작동 흐름</h2>
+		<pre>
+			<code>1. 사용자가 다운로드 버튼을 누른다.
+2. location.href = './fileDownload.do?itemNo=1'로 요청한다.
+3. Controller가 itemNo를 받는다.
+4. DB에서 파일 경로와 원본 파일명을 조회한다.
+5. File 객체로 실제 파일을 잡는다.
+6. response.setHeader('Content-Disposition', 'attachment; filename="파일명"')을 설정한다.
+7. FileInputStream으로 서버 파일을 읽는다.
+8. response.getOutputStream()으로 브라우저에 전송한다.
+9. 브라우저가 파일을 다운로드한다.</code>
+		</pre>
+
+		<div class="note">주의: Content-Disposition 철자가 틀리면 다운로드가 아니라
+			브라우저에 내용이 출력될 수 있습니다.</div>
+	</section>
+
+	<section>
+		<h2>14. 버튼별 동작 정리</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>버튼</th>
+					<th>id 또는 class</th>
+					<th>동작</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>검색</td>
+					<td>btnSearch</td>
+					<td>AJAX로 검색 후 listArea 갱신</td>
+				</tr>
+				<tr>
+					<td>취소</td>
+					<td>btnSearchCancel</td>
+					<td>main.do로 이동</td>
+				</tr>
+				<tr>
+					<td>등록 화면 이동</td>
+					<td>btnInsertView</td>
+					<td>insertView.do로 이동</td>
+				</tr>
+				<tr>
+					<td>등록</td>
+					<td>btnInsert</td>
+					<td>FormData로 파일 포함 등록 요청</td>
+				</tr>
+				<tr>
+					<td>수정</td>
+					<td>btnUpdate</td>
+					<td>updateLostItem.do로 수정 요청</td>
+				</tr>
+				<tr>
+					<td>삭제</td>
+					<td>btnDelete</td>
+					<td>confirm 후 deleteLostItem.do 요청</td>
+				</tr>
+				<tr>
+					<td>다운로드</td>
+					<td>btnDownload</td>
+					<td>fileDownload.do 요청</td>
+				</tr>
+				<tr>
+					<td>파일 추가</td>
+					<td>btnAddFile</td>
+					<td>input type=file 동적 추가</td>
+				</tr>
+				<tr>
+					<td>파일 input 삭제</td>
+					<td>btnRemoveFile</td>
+					<td>동적으로 만든 파일 input 줄 삭제</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section>
+		<h2>15. 구현 순서</h2>
+		<ol>
+			<li>DB와 lost_item 테이블 생성</li>
+			<li>샘플 데이터 insert</li>
+			<li>LostItemDTO 생성</li>
+			<li>Mapper 인터페이스 생성</li>
+			<li>lost_item_mapper.xml 작성</li>
+			<li>Service 생성</li>
+			<li>MainController로 전체 목록 출력</li>
+			<li>main.jsp에서 JSTL forEach로 목록 출력</li>
+			<li>SearchLostItemController로 AJAX 검색 구현</li>
+			<li>검색 결과를 JS forEach로 tbody에 출력</li>
+			<li>InsertLostItemController로 등록 구현</li>
+			<li>UpdateViewController와 UpdateLostItemController 구현</li>
+			<li>DeleteLostItemController 구현</li>
+			<li>FileUploadController 구현</li>
+			<li>FileDownloadController 구현</li>
+			<li>drag_upload.html로 드래그앤드롭 업로드 구현</li>
+		</ol>
+
+		<div class="good">처음부터 파일 업로드까지 한 번에 만들지 말고, 목록 조회 → 검색 →
+			등록/수정/삭제 → 파일 업로드 → 다운로드 순서로 진행하면 덜 헷갈립니다.</div>
+	</section>
+
+	<section>
+		<h2>16. 이번 예제로 복습하는 개념</h2>
+		<ul>
+			<li>JSP EL과 JSTL forEach</li>
+			<li>DTO getter/setter 규칙</li>
+			<li>MyBatis #{ }와 컬럼명 구분</li>
+			<li>@Param 사용</li>
+			<li>AJAX fetch</li>
+			<li>JSON 응답 처리</li>
+			<li>tbody 동적 출력</li>
+			<li>동적 버튼 이벤트 위임</li>
+			<li>FormData 파일 업로드</li>
+			<li>Part와 getSubmittedFileName()</li>
+			<li>File, mkdirs(), write()</li>
+			<li>dragover와 drop</li>
+			<li>Content-Disposition 다운로드 헤더</li>
+			<li>FileInputStream과 BufferedOutputStream</li>
+		</ul>
+	</section>
+
+
+	<section>
+		<h2>18. Node.js로 MySQL에 직접 샘플 데이터 넣기</h2>
+		<p>이 방식은 insert SQL문을 출력만 하는 것이 아니라, JavaScript 파일을 실행하면 MySQL에 바로
+			접속해서 lost_item 테이블에 샘플 데이터를 넣는 방식입니다.</p>
+
+		<h3>설치할 것</h3>
+		<pre>
+			<code>npm install mysql2 @faker-js/faker</code>
+		</pre>
+
+		<h3>실행 명령어</h3>
+		<pre>
+			<code>node lost_item_seed.js</code>
+		</pre>
+	</section>
+</body>
+
+</html>
