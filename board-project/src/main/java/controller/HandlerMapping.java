@@ -19,29 +19,34 @@ public class HandlerMapping {
 	public Controller createController(String command) {
 		Controller controller = null;
 		switch (command) {
+//		게시판 목록 페이지
 		case "main.do":
 			controller = new MainController();
 			break;
+			
+//			로그인 컨트롤
 		case "loginView.do":
 			controller = new LoginViewController();
 			break;
 		case "login.do":
 			controller = new LoginController();
 			break;
-		case "loginOut.do":
-			controller = new LogOutController();
+		case "logOut.do":
+			controller = new LogoutController();
 			break;
+			
+//			회원 정보 관리
 		case "registerView.do":
 			controller = new MemberRegisterViewController();
 			break;
 		case "register.do":
 			controller = new MemberRegisterController();
 			break;
-		case "delete.do":
-			controller = new MemberDeleteContorller();
-			break;
 		case "checkId.do":
 			controller = new CheckIdController();
+			break;
+		case "delete.do":
+			controller = new MemberDeleteContorller();
 			break;
 		case "search.do":
 			controller = new MemberSearchController();
@@ -51,6 +56,14 @@ public class HandlerMapping {
 			break;
 		case "update.do":
 			controller = new MemberUpdateController();
+			break;
+			
+//			게시판 정보 관리
+		case "boardWriteView.do":
+			controller = new BoardWriteViewController();
+			break;
+		case "boardWrite.do":
+			controller = new BoardWriteController();
 			break;
 		}
 		return controller;

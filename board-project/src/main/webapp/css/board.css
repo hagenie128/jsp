@@ -1,0 +1,141 @@
+html, body {
+	font-family: "Pretendard", sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+	color: #222;
+	font-size: 14px;
+}
+
+body {
+	width: 95%;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 24px 12px 40px;
+}
+
+/* 상단 메뉴 */
+nav {
+	padding-bottom: 14px;
+	border-bottom: 1px solid #999;
+	margin-bottom: 28px;
+}
+
+nav a {
+	margin-right: 10px;
+	text-decoration: none;
+	color: #333;
+	font-size: 14px;
+}
+
+nav a:hover {
+	color: #ff6fa3;
+}
+
+nav span {
+	margin-left: 8px;
+	color: #555;
+}
+
+/* 게시판 제목 */
+h2 {
+	margin: 0 0 24px;
+	font-size: 22px;
+	font-weight: 700;
+	color: #111;
+}
+
+/* 테이블 */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border-top: 1px solid #888;
+	background-color: #fff;
+}
+
+thead tr {
+	background-color: #fafafa;
+}
+
+th {
+	padding: 12px 10px;
+	border-bottom: 1px solid #e5e5e5;
+	text-align: center;
+	font-weight: 700;
+	color: #222;
+}
+
+td {
+	padding: 11px 10px;
+	border-bottom: 1px solid #e5e5e5;
+	text-align: center;
+	color: #222;
+}
+
+/* 제목 칸 */
+.title-cell {
+	text-align: left;
+	font-weight: 500;
+}
+
+/* 댓글 수 */
+.comment-count {
+	margin-left: 5px;
+	color: #ff6fa3;
+	font-weight: 700;
+	font-size: 13px;
+}
+
+tbody tr:hover {
+	background-color: #fff7fb;
+}
+
+/* 페이지 번호 */
+.page-area {
+	margin-top: 28px;
+	text-align: center;
+}
+
+.page-area a,
+.page-area strong {
+	display: inline-block;
+	min-width: 28px;
+	height: 28px;
+	line-height: 28px;
+	margin: 0 2px;
+	border: 1px solid #e5e5e5;
+	background-color: #fff;
+	color: #333;
+	text-decoration: none;
+	font-size: 13px;
+	box-sizing: border-box;
+}
+
+.page-area a:hover {
+	border-color: #ff6fa3;
+	color: #ff6fa3;
+}
+
+.page-area strong {
+	border-color: #ff6fa3;
+	color: #ff6fa3;
+	font-weight: 700;
+}
+
+/* 글쓰기, 로그아웃 같은 버튼 느낌 */
+nav a[href*="boardWrite"],
+nav a[href*="loginOut"] {
+	display: inline-block;
+	padding: 6px 12px;
+	background-color: #ff7bad;
+	color: #fff !important;
+	border: 1px solid #ff7bad;
+	text-decoration: none;
+}
+
+nav a[href*="boardWrite"]:hover,
+nav a[href*="loginOut"]:hover {
+	background-color: #ff5f9c;
+	border-color: #ff5f9c;
+	color: #fff !important;
+}

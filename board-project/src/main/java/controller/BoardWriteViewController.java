@@ -6,12 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import view.ModelAndView;
 
-public class LogOutController implements Controller {
+public class BoardWriteViewController implements Controller {
 
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		request.getSession().invalidate();;
-		return new ModelAndView("./main.do", true);
+		return new ModelAndView("board-write", false);
 	}
 
 }

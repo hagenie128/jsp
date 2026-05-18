@@ -1,6 +1,7 @@
 package servlet;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import controller.HandlerMapping;
  * Servlet implementation class DispatcherServlet
  */
 @WebServlet("*.do") // .do 로 끝나는 모든 요청을 처리하는 서블릿, 앞에 / 가 들어가면 안됨
+@MultipartConfig(maxRequestSize = 1024 * 1024 * 50, maxFileSize = 1024 * 1024 * 5) // 50메가, 5메가
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

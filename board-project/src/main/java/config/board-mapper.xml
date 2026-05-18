@@ -18,8 +18,16 @@
 		<result column="write_update_date" property="updateDate" />
 	</resultMap>
 	<select id="selectBoardList" resultMap="board">
-		select *
-		from board_view
-		order by bno desc
+		select * 
+		from 
+			(select	ROW_NUMBER() OVER(ORDER BY b.bno desc) as rw, b.*
+				from 
+			board_view b) bv
+		where 
+			ceil(bv.rw/30) = #{page};
 	</select>
+	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="bno">
+		insert into board(mno,title,content)
+		values(#{mno},#{title},#{content});
+	</insert>
 </mapper>

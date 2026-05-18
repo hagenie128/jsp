@@ -1,6 +1,9 @@
 package service;
 
+import java.util.List;
+
 import config.DBManager;
+import dto.BoardDTO;
 import mapper.BoardMapper;
 
 public class BoardService {
@@ -15,6 +18,15 @@ public class BoardService {
 		if (instance == null)
 			instance = new BoardService();
 		return instance;
+	}
+
+	public List<BoardDTO> selectBoardList(int page) {
+		return mapper.selectBoardList(page);
+	}
+
+	public int insertBoard(BoardDTO board) {
+		return mapper.insertBoard(board);
+		
 	}
 	
 }

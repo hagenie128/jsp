@@ -1,0 +1,74 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+	const toolbarOptions = [
+		  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+		  ['blockquote', 'code-block'],
+		  ['link', 'image', 'video', 'formula'],
+	
+		  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+		  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+		  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+		  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+		  [{ 'direction': 'rtl' }],                         // text direction
+	
+		  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+		  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+	
+		  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+		  [{ 'font': [] }],
+		  [{ 'align': [] }],
+	
+		  ['clean']                                         // remove formatting button
+		];
+
+	window.onload = () => {
+		const quill = new Quill('#editor', {
+			modules: {
+			    toolbar: toolbarOptions
+			  },
+		    theme: 'snow'
+		  });
+		document.querySelector("form").onsubmit = (e) => {
+			console.log(quill.getContents());
+			  console.log(quill.getText());
+			  console.log(quill.getSemanticHTML());
+			  document.querySelector("#content").value = quill.getSemanticHTML();
+		  }
+	}
+</script>
+<style>
+.container {
+  width: 500px;
+  max-width: 100%;
+}
+
+#editor {
+  height: 500px;
+}
+</style>
+<head>
+<meta charset="UTF-8">
+<title>게시글 작성</title>
+</head>
+<body>
+	<jsp:include page="./template/header.jsp"></jsp:include>
+	<hr>
+	<h1>글쓰기 페이지</h1>
+		<form action="./boardWrite.do" method="post"
+			enctype="multipart/form-data">
+			제목 : <input type='text' name='title'><br> 내용<br>
+			<div id="editor"></div>
+			<input type="hidden" name="content" id="content">
+			<hr>
+			<input type="file" name="file"><br> <input type="file"
+				name="file"><br> <input type="file" name="file"><br>
+			<button>전송</button>
+			<button type="button" onclick="history.back();">뒤로 가기</button>
+		</form>
+</body>
+</html>
